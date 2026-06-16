@@ -17,9 +17,9 @@ public enum SeverityLevel {
     }
 
     public static SeverityLevel fromValue(int value) {
-        if (value >= 75) return CRITICO;
-        if (value >= 50) return ALTO;
-        if (value >= 25) return MEDIO;
+        if (value > 75) return CRITICO;
+        if (value > 50) return ALTO;
+        if (value > 25) return MEDIO;
         return BAJO;
     }
 }

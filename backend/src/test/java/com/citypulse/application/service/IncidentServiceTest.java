@@ -5,6 +5,7 @@ import com.citypulse.application.dto.response.IncidentResponse;
 import com.citypulse.application.mapper.IncidentMapper;
 import com.citypulse.domain.enums.IncidentStatus;
 import com.citypulse.domain.enums.IncidentType;
+import com.citypulse.domain.enums.SeverityLevel;
 import com.citypulse.domain.exception.ResourceNotFoundException;
 import com.citypulse.domain.model.Incident;
 import com.citypulse.infrastructure.persistence.entity.IncidentEntity;
@@ -128,7 +129,7 @@ class IncidentServiceTest {
             var request = new IncidentRequest(
                     IncidentType.INCENDIO, "Incendio en Palermo",
                     "Av. Libertador 123", -34.5, -58.4,
-                    80, true
+                    SeverityLevel.CRITICO, true
             );
 
             when(incidentMapper.toDomain(any(), anyLong())).thenReturn(createSampleDomain());
@@ -280,7 +281,7 @@ class IncidentServiceTest {
         return new IncidentResponse(
                 1L, IncidentType.INCENDIO, IncidentStatus.REPORTADO,
                 "Incendio en Palermo", "Av. Libertador 123",
-                -34.5, -58.4, 80, true, 80,
+                -34.5, -58.4, 80, SeverityLevel.CRITICO, true, 80,
                 1L, LocalDateTime.now(), LocalDateTime.now()
         );
     }

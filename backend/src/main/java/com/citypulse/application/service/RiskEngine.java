@@ -9,19 +9,20 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.ToIntFunction;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Component
 public class RiskEngine {
 
     private static final List<Predicate<Incident>> riskFactors = List.of(
-            incident -> SeverityLevel.fromValue(incident.getSeverity()) == SeverityLevel.CRITICO
-                    || SeverityLevel.fromValue(incident.getSeverity()) == SeverityLevel.ALTO,
+            incident -> {
+                var level = SeverityLevel.fromValue(incident.getSeverity());
+                return level == SeverityLevel.ALTO || level == SeverityLevel.CRITICO;
+            },
             incident -> incident.getType() == IncidentType.INCENDIO,
             incident -> incident.getType() == IncidentType.ROBO,
             incident -> incident.isSensitiveZone(),
-            incident -> SeverityLevel.fromValue(incident.getSeverity()) == SeverityLevel.ALTO
+            incident -> SeverityLevel.fromValue(incident.getSeverity()) != SeverityLevel.BAJO
                     && incident.isSensitiveZone()
     );
 
@@ -42,9 +43,6 @@ public class RiskEngine {
                 case BAJO -> "Sin novedad";
             };
 
-    private static final List<SeverityLevel> orderedLevels =
-            List.of(SeverityLevel.values());
-
     public int calculateRisk(Incident incident) {
         return riskFactors.stream()
                 .map(factor -> factor.test(incident) ? 1 : 0)
@@ -54,11 +52,9 @@ public class RiskEngine {
 
     public int calculateRiskWithHistory(Incident incident, long similarIncidentsCount) {
         int baseRisk = calculateRisk(incident);
-
         long reportFactor = Stream.of(similarIncidentsCount)
                 .map(count -> count > 10 ? 20 : count > 5 ? 10 : count > 2 ? 5 : 0)
                 .reduce(0, Integer::sum);
-
         return Math.min(100, baseRisk + (int) reportFactor);
     }
 
@@ -75,6 +71,6 @@ public class RiskEngine {
     }
 
     public List<SeverityLevel> getSeverityLevels() {
-        return orderedLevels;
+        return List.of(SeverityLevel.values());
     }
 }
