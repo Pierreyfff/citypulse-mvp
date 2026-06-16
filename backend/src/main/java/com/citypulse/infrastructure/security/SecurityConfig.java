@@ -35,7 +35,7 @@ public class SecurityConfig {
                         .pathMatchers("/api/dashboard/**").authenticated()
                         .pathMatchers("/api/stats/**").hasAnyRole("ADMIN", "OPERADOR")
                         .pathMatchers("/ws/**").permitAll()
-                        .pathMatchers("/v3/api-docs/**", "/swagger-ui/**").permitAll()
+                        .pathMatchers("/", "/v3/api-docs/**", "/swagger-ui/**").permitAll()
                         .anyExchange().authenticated()
                 )
                 .addFilterAt(jwtFilter, SecurityWebFiltersOrder.AUTHENTICATION)
