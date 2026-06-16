@@ -1,4 +1,4 @@
-import { Dialog, DialogTitle, DialogContent, TextField, DialogActions, Button, MenuItem, Typography, Box, Snackbar, Alert } from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, TextField, DialogActions, Button, MenuItem, Typography, Box } from '@mui/material';
 import { useEffect, useState, useCallback } from 'react';
 import type { IncidentRequest, IncidentType, SeverityLevel } from '../../types/incident';
 
